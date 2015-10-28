@@ -2,23 +2,47 @@ require 'byebug'
 
 get '/' do
   # let user create new short ULR, display a list of shortened URLs
-  @urls = Url.all
+  @urls = Url.first(15)
   erb :"static/index"
 end
 
 post '/urls' do
-	# create a new URL
-	@current_url = Url.new(long_url: params[:long_url]) 
-	@current_url.short_url = @current_url.shorty
-	if @current_url.save
-		redirect "/#{@current_url.short_url}"
-		# url = (Url.all.order(id: :desc)).limit(20)
-	else
-		# status = false
-		# status.to_json
-		#@urls = Url.all.to_json
-		redirect to "/"
-	end
+
+	@url = Url.find_by(long_url:params[:long_url])
+	 if @url
+	 	redirect "/urls/#{@url.id}"
+	 else
+	 	@url = Url.new(long_url:params[:long_url])
+	 	if @url.save
+	 		redirect "/urls/#{url.id}"
+	 	else
+	 		@url = Url.all
+	 		@failed = true
+	 		@all_url = Url.all.order(click_count: :desc).limit(5)
+	 		erb :'static/index'
+	 	end
+	 end
+end
+
+# post '/urls' do
+# 	# create a new URL
+# 	@current_url = Url.new(long_url: params[:long_url]) 
+# 	@current_url.short_url = @current_url.shorty
+# 	if @current_url.save
+# 		redirect "/"
+# 		# url = (Url.all.order(id: :desc)).limit(20)
+# 	else
+# 		# status = false
+# 		# status.to_json
+# 		#@urls = Url.all.to_json
+# 		redirect to "/"
+# 	end
+# end
+
+get '/urls/:id' do
+  @url = Url.find_by(id: params[:id])
+  @all_url = Url.all.order(click_count: :desc).limit(10)
+  erb :'static/show'
 end
 
 # i.e. /q6bda
@@ -29,11 +53,11 @@ get '/:short_url' do
 	redirect to "#{url.long_url}"
 end
 
-get '/' do
-	puts "[LOG] Getting /"
-	puts "[LOG] Params: #{params.inspect}"
-	erb :index
-end
+# get '/' do
+# 	puts "[LOG] Getting /"
+# 	puts "[LOG] Params: #{params.inspect}"
+# 	erb :index
+# end
 
 
 # get '/' do 

@@ -10,6 +10,11 @@ class Url < ActiveRecord::Base
 	def shorty
 		SecureRandom.urlsafe_base64(8)
 	end
+
+	def count
+	    self.click_count += 1
+	    self.save
+	end
 end
 
 # def random_string(length)
