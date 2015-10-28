@@ -1,2 +1,43 @@
-<h1>Hello World</h1>
-<p>See Me in views/static/index.html.erb</p>
+<!-- <form action="/urls" method="post">
+	ENTER URL:
+	<input type ="text" name="long_url">
+	<input type ="submit" value="Submit">
+</form> -->
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blog</title>
+  <link rel="stylesheet" type="text/css" href="css/application.css">
+</head>
+<body>
+<h1 align="center">Go ahead, shortay</h1>
+<p id="loading"></p>
+
+   <div class="banner b01 center">
+     <p id = "p01" align = "center">Enter your URL here to get shortified!</p>
+         
+         <form action="/urls" method="post" style="text-align: center">
+             <input id = "input" type ="text" name="long_url" placeholder="Paste your link here" size="40">
+             <input id = "submitbutton" type ="submit" value="Short it!">
+         </form>
+
+   </div>
+<div id="shorturl"></div>
+<div class="error redfont center">
+  <% if @failed %>
+  Error:
+  Please input a valid URL.
+  <% end %>
+</div>
+
+  <tbody>
+  </tbody>
+</table>
+</div>
+
+</body>
+</html>
